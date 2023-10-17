@@ -23,12 +23,14 @@ insert into score values(1,1,1,80),(2,2,1,90),(3,3,1,70);
 insert into score values(4,1,2,70),(5,2,2,90),(6,3,2,80);
 insert into score values(7,1,3,80),(8,2,3,60),(9,3,3,70);
 
--- 查看
+-- 查看表数据
 select * from course;
 select * from student;
 select * from score;
 
--- 查询总分最高的学生
+-- 1.查询总分最高成绩
+
+-- 先查询出总分最高的学生的student_id
 select distinct(student_id) 
 from score 
 group by student_id 
@@ -39,7 +41,8 @@ having sum(score) = (
 	order by sum(score) desc limit 1
 );
 
-select s.name,t.score 
+-- 通过子查询根据student_id分组查询出最高分的student_name和sum_score
+select s.name student_name,t.score sum_score
 from student s right join (
 	select distinct(student_id),sum(score) score 
 	from score 
@@ -52,15 +55,20 @@ from student s right join (
 	) 
 ) t on s.id = t.student_id;
 
--- 查询所有学生单科成绩的最高分
-select max(score) score,course_id from score group by course_id;
 
+-- 2.查询单科最高成绩
+
+-- 通过course_id分组查询单科最高的分数
+select max(score) max_score,course_id from score group by course_id;
+
+-- 通过course_id分组查询出所有学生单科成绩最高分
 select student_id,s1.course_id,s2.max_score from score s1
 right join (
 	select max(score) max_score,course_id from score group by course_id
 ) s2 on s1.course_id = s2.course_id and s1.score = s2.max_score;
 
-select s.name,c.name,s2.max_score from score s1
+-- 通过子查询和多表查询出单科成绩最高分的student_name,course_name,max_score
+select s.name student_name,c.name course_name,s2.max_score from score s1
 right join (
 	select max(score) max_score,course_id 
 	from score 
