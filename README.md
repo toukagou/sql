@@ -1,2 +1,3 @@
 # sql
-一些sql的理解
+WeChat：iam_jiahao
+学习中...
