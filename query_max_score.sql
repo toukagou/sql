@@ -1,3 +1,4 @@
+-- 建表
 create table course(
 	"id" integer primary key,
 	"name" text not null
@@ -15,21 +16,19 @@ create table score(
 	score integer not null
 );
 
---
-
+-- 插入数据
 insert into course values(1,'语文'),(2,'数学'),(3,'外语');
-insert into student values(1,'阿米娅'),(2,'凯尔希'),(3,'陈洁晖');
-
+insert into student values(1,'阿米娅'),(2,'凯尔希'),(3,'陈晖洁');
 insert into score values(1,1,1,80),(2,2,1,90),(3,3,1,70);
 insert into score values(4,1,2,70),(5,2,2,90),(6,3,2,80);
 insert into score values(7,1,3,80),(8,2,3,60),(9,3,3,70);
 
---
+-- 查看
 select * from course;
 select * from student;
 select * from score;
 
--- 总分最高的学生
+-- 查询总分最高的学生
 select distinct(student_id) 
 from score 
 group by student_id 
@@ -53,7 +52,7 @@ from student s right join (
 	) 
 ) t on s.id = t.student_id;
 
--- 单科最高
+-- 查询所有学生单科成绩的最高分
 select max(score) score,course_id from score group by course_id;
 
 select student_id,s1.course_id,s2.max_score from score s1
